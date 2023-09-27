@@ -13,6 +13,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 // test push again
 //Loitest
+// loi test2
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
