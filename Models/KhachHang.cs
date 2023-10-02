@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Attributes;
 
 namespace HotelManagementAPI.Models;
 
@@ -13,6 +14,7 @@ public partial class KhachHang
 {
     [Key]
     [Column("MaKH")]
+    [Sieve(CanSort = true)]
     public int MaKh { get; set; }
 
     [StringLength(100)]
@@ -32,11 +34,13 @@ public partial class KhachHang
     [Column("SDT")]
     [StringLength(10)]
     [Unicode(false)]
+    [Sieve(CanFilter = true, CanSort = true)]
     public string? Sdt { get; set; }
 
     [Column("CCCD")]
     [StringLength(12)]
     [Unicode(false)]
+    [Sieve(CanFilter = true, CanSort =true)]
     public string? Cccd { get; set; }
 
     public bool XepHang { get; set; }

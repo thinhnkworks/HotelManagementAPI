@@ -3,9 +3,20 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using HotelManagementAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Sieve.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+// Inject serilog
+var logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).Enrich.FromLogContext().CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+//inject unit of work
+//inject automapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//inject sieve
+builder.Services.AddSingleton<SieveProcessor>();
 // Connect Azure Key Vault to inject secrets
 string kvURL = builder.Configuration["KeyVaultConfig:KeyVaultURL"];
 string tenantID = builder.Configuration["KeyVaultConfig:TenantID"];
