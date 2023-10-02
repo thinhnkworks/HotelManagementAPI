@@ -63,11 +63,11 @@ namespace HotelManagementAPI.Core.Repositories
                 return false;
             }
         }
-        public override async Task<bool> UpdateAsync(KhachHang entity)
+        public override async Task<bool> UpdateAsync(int id, KhachHang entity)
         {
             try
             {
-                var khachHangExist = await _dbSet.FirstOrDefaultAsync(x => x.MaKh == entity.MaKh);
+                var khachHangExist = await _dbSet.FirstOrDefaultAsync(x => x.MaKh == id);
 
                 if (khachHangExist == null)
                 {

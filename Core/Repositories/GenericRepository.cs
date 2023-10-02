@@ -37,7 +37,7 @@ namespace HotelManagementAPI.Core.Repositories
             return user;
         }
 
-        public virtual Task<bool> UpdateAsync(T entity)
+        public virtual Task<bool> UpdateAsync(int id, T entity)
         {
             throw new NotImplementedException();
         }

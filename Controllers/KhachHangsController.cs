@@ -104,7 +104,7 @@ namespace HotelManagementAPI.Controllers
                 });
             }
             var convertToKhachHang = _mapper.Map<KhachHang>(khachHang);
-            await _unitOfWork.Customers.UpdateAsync(convertToKhachHang);
+            await _unitOfWork.Customers.UpdateAsync(id, convertToKhachHang);
             await _unitOfWork.CompleteAsync();
             return NoContent();
         }
