@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Connect Azure Key Vault to inject secrets
-//string kvURL = builder.Configuration["KeyVaultConfig:KeyVaultURL"];
-//string tenantID = builder.Configuration["KeyVaultConfig:TenantID"];
-//string clientID = builder.Configuration["KeyVaultConfig:ClientID"];
-//string clientSecret = builder.Configuration["KeyVaultConfig:ClientSecret"];
-//var credential = new ClientSecretCredential(tenantID, clientID, clientSecret);
-//var client = new SecretClient(new Uri(kvURL), credential);
-//// Inject Key Vault secrets to env
-//builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+string kvURL = builder.Configuration["KeyVaultConfig:KeyVaultURL"];
+string tenantID = builder.Configuration["KeyVaultConfig:TenantID"];
+string clientID = builder.Configuration["KeyVaultConfig:ClientID"];
+string clientSecret = builder.Configuration["KeyVaultConfig:ClientSecret"];
+var credential = new ClientSecretCredential(tenantID, clientID, clientSecret);
+var client = new SecretClient(new Uri(kvURL), credential);
+// Inject Key Vault secrets to env
+builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
 
 // Add services to the container.
 
