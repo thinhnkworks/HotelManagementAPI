@@ -14,9 +14,7 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                if (!(await CheckUniqueOfStd(entity.Sdt!)))
-                    return false;
-                if (!(await CheckUniqueOfCccd(entity.Cccd!)))
+                if (!(await CheckUniqueOfStd(entity.Sdt!)) || !(await CheckUniqueOfCccd(entity.Cccd!)))
                     return false;
                 return await base.AddAsync(entity);
             } catch (Exception ex)
@@ -77,30 +75,33 @@ namespace HotelManagementAPI.Core.Repositories
                 {
                     return await AddAsync(entity);
                 }
-                if (!String.IsNullOrEmpty(entity.HoTen)) {
+                if (!(await CheckUniqueOfStd(entity.Sdt!)) || !(await CheckUniqueOfCccd(entity.Cccd!)))
+                    return false;
+                if (!String.IsNullOrEmpty(entity.HoTen))
+                {
                     khachHangExist.HoTen = entity.HoTen;
                 }
                 if (entity.SoLanNghi != null)
                 {
                     khachHangExist.SoLanNghi = entity.SoLanNghi;
                 }
-                if(entity.NgaySinh != null)
+                if (entity.NgaySinh != null)
                 {
                     khachHangExist.NgaySinh = entity.NgaySinh;
                 }
-                if(!String.IsNullOrEmpty(entity.GioiTinh))
+                if (!String.IsNullOrEmpty(entity.GioiTinh))
                 {
                     khachHangExist.GioiTinh = entity.GioiTinh;
                 }
-                if(!String.IsNullOrEmpty(entity.DiaChi))
+                if (!String.IsNullOrEmpty(entity.DiaChi))
                 {
                     khachHangExist.DiaChi = entity.DiaChi;
                 }
-                if(!String.IsNullOrEmpty(entity.Sdt))
+                if (!String.IsNullOrEmpty(entity.Sdt))
                 {
                     khachHangExist.Sdt = entity.Sdt;
                 }
-                if(!String.IsNullOrEmpty(entity.Cccd))
+                if (!String.IsNullOrEmpty(entity.Cccd))
                 {
                     khachHangExist.Cccd = entity.Cccd;
                 }
@@ -111,21 +112,50 @@ namespace HotelManagementAPI.Core.Repositories
                 return false;
             }
         }
-
         public async Task<bool> CheckUniqueOfStd(string sdt)
         {
-            var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Sdt == sdt);
-            if (exitKhachHang == null)
-                return true;
-            return false;
+            try
+            {
+                var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Sdt == sdt);
+                if (exitKhachHang == null)
+                    return true;
+                return false;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} CheckSDT method error", typeof(CustomerRepository));
+                return false;
+            }
         }
 
         public async Task<bool> CheckUniqueOfCccd(string cccd)
         {
-            var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Cccd == cccd);
-            if (exitKhachHang == null)
-                return true;
-            return false; ;
+            try
+            {
+                var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Cccd == cccd);
+                if (exitKhachHang == null)
+                    return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} CheckCCCD method error", typeof(CustomerRepository));
+                return false;
+            }
+        }
+
+        public async Task<KhachHang?> GetByCCCDAsync(string cccd)
+        {
+            try
+            {
+                var existKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Cccd == cccd);
+                if (existKhachHang != null)
+                    return existKhachHang;
+                return null;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} getByCCCD method error", typeof(CustomerRepository));
+                return null;
+            }
         }
     }
 }

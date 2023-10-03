@@ -2,7 +2,7 @@
 
 namespace HotelManagementAPI.DTO.Request
 {
-    public class KhachHangRequestUpdateDto
+    public class KhachHangRequestDto
     {
         [Required]
         [MaxLength(100)]
@@ -12,20 +12,16 @@ namespace HotelManagementAPI.DTO.Request
         public DateTime? NgaySinh { get; set; }
 
         [MaxLength(3)]
-        [Required]
         public string? GioiTinh { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public string? DiaChi { get; set; }
 
-        [Required]
-        [MaxLength(10)]
+        [MinLength(10)]
         [RegularExpression(@"^[0-9]*$")]
         public string? Sdt { get; set; }
 
-        [MaxLength(12)]
-        [Required]
+        [MinLength(12)]
         [RegularExpression(@"^[0-9]*$")]
         public string? Cccd { get; set; }
     }

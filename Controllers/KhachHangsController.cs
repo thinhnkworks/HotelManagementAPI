@@ -86,11 +86,40 @@ namespace HotelManagementAPI.Controllers
             }
             return Ok(new Result(){Success = true, Data = _mapper.Map<KhachHangResponeDto>(khachHang) });
         }
+        // GET: api/KhachHangs/123456789012
+        [HttpGet("cccd/{cccd}")]
+        public async Task<ActionResult<KhachHangResponeDto>> GetKhachHang(string cccd)
+        {
+            if (_unitOfWork.Customers == null)
+            {
+                return NotFound(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>
+                    {
+                        "entity Customer don't exist"
+                    }
+                });
+            }
+            var khachHang = await _unitOfWork.Customers.GetByCCCDAsync(cccd);
 
+            if (khachHang == null)
+            {
+                return NotFound(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>
+                    {
+                        "Customer don't exist"
+                    }
+                });
+            }
+            return Ok(new Result() { Success = true, Data = _mapper.Map<KhachHangResponeDto>(khachHang) });
+        }
         // PUT: api/KhachHangs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchKhachHang(int id,[FromBody] KhachHangRequestUpdateDto khachHang)
+        public async Task<IActionResult> PatchKhachHang(int id,[FromBody] KhachHangRequestDto khachHang)
         {
             var existKhachHang = await _unitOfWork.Customers.GetAsync(id);
             if(existKhachHang == null)
@@ -104,7 +133,18 @@ namespace HotelManagementAPI.Controllers
                 });
             }
             var convertToKhachHang = _mapper.Map<KhachHang>(khachHang);
-            await _unitOfWork.Customers.UpdateAsync(id, convertToKhachHang);
+            var successUpdate = await _unitOfWork.Customers.UpdateAsync(id, convertToKhachHang);
+            if(!successUpdate)
+            {
+                return BadRequest(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                        {
+                            "Invalid input, There is a field that has not been validated",
+                        }
+                });
+            }
             await _unitOfWork.CompleteAsync();
             return NoContent();
         }
@@ -112,7 +152,7 @@ namespace HotelManagementAPI.Controllers
         // POST: api/KhachHangs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<KhachHangResponeDto>> PostKhachHang([FromBody] KhachHangRequestPostDto khachHang)
+        public async Task<ActionResult<KhachHangResponeDto>> PostKhachHang([FromBody] KhachHangRequestDto khachHang)
         {
           if(ModelState.IsValid)
             {
