@@ -8,7 +8,8 @@ namespace HotelManagementAPI.AutoMapper
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile() {
-            CreateMap<KhachHang, KhachHangResponeDto>();
+            CreateMap<KhachHang, KhachHangResponeDto>()
+                .ForMember(des => des.MaKH, opts => opts.MapFrom(src => src.MaKh));
             CreateMap<KhachHangRequestUpdateDto, KhachHang>();
             CreateMap<KhachHangRequestPostDto, KhachHang>();
         }

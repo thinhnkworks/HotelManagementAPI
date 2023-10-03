@@ -84,7 +84,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            return Ok(_mapper.Map<KhachHangResponeDto>(khachHang));
+            return Ok(new Result(){Success = true, Data = _mapper.Map<KhachHangResponeDto>(khachHang) });
         }
 
         // PUT: api/KhachHangs/5
@@ -112,7 +112,7 @@ namespace HotelManagementAPI.Controllers
         // POST: api/KhachHangs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<KhachHang>> PostKhachHang([FromBody] KhachHangRequestPostDto khachHang)
+        public async Task<ActionResult<KhachHangResponeDto>> PostKhachHang([FromBody] KhachHangRequestPostDto khachHang)
         {
           if(ModelState.IsValid)
             {
@@ -123,14 +123,24 @@ namespace HotelManagementAPI.Controllers
                 var convertToKhachHang = _mapper.Map<KhachHang>(khachHang);
                 convertToKhachHang.SoLanNghi = 1;
                 convertToKhachHang.XepHang = false;
-                await _unitOfWork.Customers.AddAsync(convertToKhachHang);
+                var successCreated = await _unitOfWork.Customers.AddAsync(convertToKhachHang);
+                if(successCreated == false)
+                {
+                    return BadRequest(new Result()
+                    {
+                        Success = false,
+                        Errors = new List<string>()
+                        {
+                            "Invalid input, There is a field that has not been validated",
+                        }
+                    });
+                }
                 await _unitOfWork.CompleteAsync();
-
                 return CreatedAtAction("GetKhachHang", new { id = convertToKhachHang.MaKh }, new Result()
                 {
                     Success = true,
-                    Data = khachHang
-                });
+                    Data = _mapper.Map<KhachHangResponeDto>(convertToKhachHang)
+                }) ;
             }
             return new JsonResult(new Result()
             {

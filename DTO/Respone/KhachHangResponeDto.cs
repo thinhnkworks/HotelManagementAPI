@@ -8,7 +8,7 @@ namespace HotelManagementAPI.DTO.Respone
     public class KhachHangResponeDto
     {
         [Required]
-        public int MaKh { get; set; }
+        public int MaKH { get; set; }
 
         [Required]
         [MaxLength(100)]

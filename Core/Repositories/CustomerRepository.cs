@@ -14,6 +14,10 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
+                if (!(await CheckUniqueOfStd(entity.Sdt!)))
+                    return false;
+                if (!(await CheckUniqueOfCccd(entity.Cccd!)))
+                    return false;
                 return await base.AddAsync(entity);
             } catch (Exception ex)
             {
@@ -106,6 +110,22 @@ namespace HotelManagementAPI.Core.Repositories
                 _logger.LogError(ex, "{Repo} update method error", typeof(CustomerRepository));
                 return false;
             }
+        }
+
+        public async Task<bool> CheckUniqueOfStd(string sdt)
+        {
+            var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Sdt == sdt);
+            if (exitKhachHang == null)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> CheckUniqueOfCccd(string cccd)
+        {
+            var exitKhachHang = await _dbSet.FirstOrDefaultAsync(x => x.Cccd == cccd);
+            if (exitKhachHang == null)
+                return true;
+            return false; ;
         }
     }
 }
