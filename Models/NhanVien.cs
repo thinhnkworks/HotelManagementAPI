@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Attributes;
 
 namespace HotelManagementAPI.Models;
 
@@ -13,9 +14,11 @@ public partial class NhanVien
 {
     [Key]
     [Column("MaNV")]
+    [Sieve(CanSort = true)]
     public int MaNv { get; set; }
 
     [StringLength(100)]
+    [Sieve(CanFilter = true)]
     public string HoTen { get; set; } = null!;
 
     [Column(TypeName = "datetime")]
@@ -30,14 +33,16 @@ public partial class NhanVien
     [Column("SDT")]
     [StringLength(10)]
     [Unicode(false)]
+    [Sieve(CanFilter = true, CanSort = true)]
     public string? Sdt { get; set; }
 
     [Column("CCCD")]
     [StringLength(12)]
     [Unicode(false)]
+    [Sieve(CanFilter = true, CanSort = true)]
     public string? Cccd { get; set; }
 
-    public bool QuanLy { get; set; }
+    public bool? QuanLy { get; set; }
 
     [MaxLength(32)]
     public byte[] MatKhau { get; set; } = null!;
