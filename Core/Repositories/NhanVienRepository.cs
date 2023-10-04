@@ -124,7 +124,7 @@ namespace HotelManagementAPI.Core.Repositories
                 return false;
             }
         }
-        public override async Task<bool> CheckUniqueOfStd(string sdt)
+        public async Task<bool> CheckUniqueOfStd(string sdt)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace HotelManagementAPI.Core.Repositories
             }
         }
 
-        public override async Task<bool> CheckUniqueOfCccd(string cccd)
+        public async Task<bool> CheckUniqueOfCccd(string cccd)
         {
             try
             {
