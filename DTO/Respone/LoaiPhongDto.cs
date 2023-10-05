@@ -1,6 +1,8 @@
-﻿namespace HotelManagementAPI.DTO.Respone
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HotelManagementAPI.DTO.Respone
 {
-    public class LoaiPhongResponeDto
+    public class LoaiPhongDto
     {
         public int MaLoaiPhong { get; set; }
 
@@ -10,6 +12,5 @@
 
         public double Gia { get; set; }
 
-        public ICollection<PhongDto> Phongs { get; set; } = null!;
     }
 }
