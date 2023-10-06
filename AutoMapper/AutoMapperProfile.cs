@@ -15,6 +15,10 @@ namespace HotelManagementAPI.AutoMapper
                 .ForMember(des => des.MatKhau, opts => opts.Ignore());
             CreateMap<NhanVien, NhanVienResponeDto>()
                 .ForMember(des => des.MaNV, opt => opt.MapFrom(src => src.MaNv));
-        }
+            CreateMap<Phong, PhongResponeDto>()
+                .ForMember(des => des.LoaiPhong, opts => opts.MapFrom(src => src.MaLoaiPhongNavigation));
+            CreateMap<PhongRequestDto, Phong>();
+            CreateMap<LoaiPhong, LoaiPhongResponeDto>();
+         }
     }
 }

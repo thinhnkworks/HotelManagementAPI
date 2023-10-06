@@ -6,6 +6,8 @@ namespace HotelManagementAPI.Data
     {
         ICustomerRepository Customers { get; }
         INhanVienRepository NhanViens { get; }
+        ILoaiPhongRepository LoaiPhongs { get; }
+        IPhongRepository Phongs { get; }
         Task CompleteAsync();
     }
 }

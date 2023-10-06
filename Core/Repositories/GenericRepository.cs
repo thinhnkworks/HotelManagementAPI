@@ -41,15 +41,5 @@ namespace HotelManagementAPI.Core.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public virtual Task<bool> CheckUniqueOfStd(string sdt)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual Task<bool> CheckUniqueOfCccd(string cccd)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
