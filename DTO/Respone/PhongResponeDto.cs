@@ -9,6 +9,6 @@ namespace HotelManagementAPI.DTO.Respone
 
         public int TrangThai { get; set; }
 
-        public LoaiPhongResponeDto? LoaiPhong { get; set; }
+        public LoaiPhongDto? LoaiPhong { get; set; }
     }
 }

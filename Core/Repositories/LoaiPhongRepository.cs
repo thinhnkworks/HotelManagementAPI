@@ -26,7 +26,7 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                var loaiPhongs = await base.GetAllAsync();
+                var loaiPhongs = await _dbSet.Include(x => x.Phongs).ToListAsync();
                 return loaiPhongs;
             }
             catch (Exception ex)
@@ -39,7 +39,7 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                LoaiPhong? loaiPhong = await base.GetAsync(id);
+                LoaiPhong? loaiPhong = await _dbSet.Include(x => x.Phongs).FirstOrDefaultAsync(x => x.MaLoaiPhong == id);
                 if (loaiPhong == null)
                     return null;
                 return loaiPhong;
@@ -81,11 +81,11 @@ namespace HotelManagementAPI.Core.Repositories
                 {
                     loaiPhongExist.TenLoaiPhong= entity.TenLoaiPhong;
                 }
-                if (entity.SoNguoiO != 0)
+                if (entity.SoNguoiO < 0)
                 {
                     loaiPhongExist.SoNguoiO = entity.SoNguoiO;
                 }
-                if (entity.Gia != 0.0)
+                if (entity.Gia < 0.0)
                 {
                     loaiPhongExist.Gia = entity.Gia;
                 }
