@@ -11,6 +11,10 @@ namespace HotelManagementAPI.AutoMapper
             CreateMap<KhachHang, KhachHangResponeDto>()
                 .ForMember(des => des.MaKH, opts => opts.MapFrom(src => src.MaKh));
             CreateMap<KhachHangRequestDto, KhachHang>();
+            CreateMap<NhanVienRequestDto, NhanVien>()
+                .ForMember(des => des.MatKhau, opts => opts.Ignore());
+            CreateMap<NhanVien, NhanVienResponeDto>()
+                .ForMember(des => des.MaNV, opt => opt.MapFrom(src => src.MaNv));
         }
     }
 }

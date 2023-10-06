@@ -207,8 +207,8 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            var khachHang = await _unitOfWork.Customers.GetAsync(id);
-            if (khachHang == null)
+            var successDeleted = await _unitOfWork.Customers.DeleteAsync(id);
+            if (successDeleted == false)
             {
                 return NotFound(new Result()
                 {
@@ -219,10 +219,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-
-            await _unitOfWork.Customers.DeleteAsync(id);
             await _unitOfWork.CompleteAsync();
-
             return NoContent();
         }
     }

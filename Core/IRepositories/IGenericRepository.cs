@@ -7,5 +7,7 @@
         Task<bool> AddAsync(T entity);
         Task<bool> UpdateAsync(int id,T entity);
         Task<bool> DeleteAsync(int id);
+        Task<bool> CheckUniqueOfStd(string sdt);
+        Task<bool> CheckUniqueOfCccd(string cccd);
     }
 }

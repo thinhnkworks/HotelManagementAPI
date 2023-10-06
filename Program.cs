@@ -2,6 +2,7 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using HotelManagementAPI.Data;
+using HotelManagementAPI.Helper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Sieve.Services;
@@ -17,6 +18,8 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //inject sieve
 builder.Services.AddSingleton<SieveProcessor>();
+//inject helper
+builder.Services.AddSingleton<IHelper, Helper>();
 // Connect Azure Key Vault to inject secrets
 string kvURL = builder.Configuration["KeyVaultConfig:KeyVaultURL"];
 string tenantID = builder.Configuration["KeyVaultConfig:TenantID"];
