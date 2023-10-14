@@ -22,6 +22,11 @@ namespace HotelManagementAPI.AutoMapper
             CreateMap<LoaiPhongRequestDto, LoaiPhong>();
             CreateMap<LoaiPhong, LoaiPhongDto>();
             CreateMap<LoaiPhong, LoaiPhongResponeDto>();
+            CreateMap<PhuPhi, PhuPhiResponeDto>()
+                .ForMember(des => des.MaPP, opt => opt.MapFrom(src => src.MaPp))
+                .ForMember(des => des.TenPP, opt => opt.MapFrom(src => src.TenPp));
+            CreateMap<PhuPhiRequestDto, PhuPhi>()
+                .ForMember(des =>des.TenPp, opt => opt.MapFrom(src => src.TenPP));
          }
     }
 }
