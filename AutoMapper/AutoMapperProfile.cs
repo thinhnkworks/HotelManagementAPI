@@ -27,6 +27,11 @@ namespace HotelManagementAPI.AutoMapper
                 .ForMember(des => des.TenPP, opt => opt.MapFrom(src => src.TenPp));
             CreateMap<PhuPhiRequestDto, PhuPhi>()
                 .ForMember(des =>des.TenPp, opt => opt.MapFrom(src => src.TenPP));
+            CreateMap<DichVu, DichVuResponeDto>()
+                .ForMember(des => des.MaDV, opt => opt.MapFrom(src => src.MaDv))
+                .ForMember(des => des.TenDV, opt => opt.MapFrom(src => src.TenDv));
+            CreateMap<DichVuRequestDto, DichVu>()
+                .ForMember(des => des.TenDv, opt => opt.MapFrom(src => src.TenDV));
          }
     }
 }
