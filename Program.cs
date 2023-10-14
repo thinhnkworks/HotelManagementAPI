@@ -4,6 +4,7 @@ using Azure.Security.KeyVault.Secrets;
 using HotelManagementAPI.Data;
 using HotelManagementAPI.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Sieve.Services;
 
@@ -20,6 +21,16 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<SieveProcessor>();
 //inject helper
 builder.Services.AddSingleton<IHelper, Helper>();
+//jnject cors 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 // Connect Azure Key Vault to inject secrets
 string kvURL = builder.Configuration["KeyVaultConfig:KeyVaultURL"];
 string tenantID = builder.Configuration["KeyVaultConfig:TenantID"];
@@ -46,11 +57,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
