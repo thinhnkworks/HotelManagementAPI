@@ -75,7 +75,7 @@ namespace HotelManagementAPI.Core.Repositories
                 {
                     return await AddAsync(entity);
                 }
-                if (!(await CheckUniqueOfStd(entity.Sdt!)) || !(await CheckUniqueOfCccd(entity.Cccd!)))
+                if ((!(await CheckUniqueOfStd(entity.Sdt!)) && khachHangExist.Sdt != entity.Sdt) || (!(await CheckUniqueOfCccd(entity.Cccd!)) && khachHangExist.Cccd != entity.Cccd))
                     return false;
                 if (!String.IsNullOrEmpty(entity.HoTen))
                 {
