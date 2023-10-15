@@ -120,7 +120,7 @@ namespace HotelManagementAPI.Controllers
         }
         // PUT: api/NhanViens/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPatch("{id}")]
+        /*[HttpPatch("{id}")]
         public async Task<IActionResult> PatchNhanVien(int id, [FromBody] NhanVienRequestDto nhanVien)
         {
             var existNhanVien = await _unitOfWork.NhanViens.GetAsync(id);
@@ -137,6 +137,38 @@ namespace HotelManagementAPI.Controllers
             var password = nhanVien.MatKhau;
             var convertToNhanVien = _mapper.Map<NhanVien>(nhanVien);
             var successUpdate = await _unitOfWork.NhanViens.UpdateNhanVienWithHashPassword(id, convertToNhanVien, password);
+            if (!successUpdate)
+            {
+                return BadRequest(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                        {
+                            "Invalid input, There is a field that has not been validated",
+                        }
+                });
+            }
+            await _unitOfWork.CompleteAsync();
+            return NoContent();
+        }*/
+        // PUT: api/NhanViens/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchNhanVien(int id, [FromBody] NhanVienUpdateDto nhanVien)
+        {
+            var existNhanVien = await _unitOfWork.NhanViens.GetAsync(id);
+            if (existNhanVien == null)
+            {
+                return BadRequest(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>() {
+                        "nhanvien not exist",
+                    }
+                });
+            }
+            var convertToNhanVien = _mapper.Map<NhanVien>(nhanVien);
+            var successUpdate = await _unitOfWork.NhanViens.UpdateAsync(id, convertToNhanVien);
             if (!successUpdate)
             {
                 return BadRequest(new Result()
