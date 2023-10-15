@@ -15,6 +15,7 @@ namespace HotelManagementAPI.Data
         public ILoaiPhongRepository LoaiPhongs { get; set; }
         public IPhongRepository Phongs { get; set; }
         public IPhuPhiRepository PhuPhis { get; set; }
+        public IDichVuRepository DichVus { get; set; }
 
         public UnitOfWork(DataContext dataContext, ILoggerFactory loggerFactory,IHelper helper, IConfiguration configuration)
         {
@@ -27,6 +28,7 @@ namespace HotelManagementAPI.Data
             Phongs = new PhongRepository(_context, _logger);
             LoaiPhongs = new LoaiPhongRepository(_context, _logger);
             PhuPhis = new PhuPhiRepository(_context, _logger);
+            DichVus = new DichVuRepository(_context, _logger);
         }
         public async Task CompleteAsync()
         {
