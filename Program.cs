@@ -4,7 +4,9 @@ using Azure.Security.KeyVault.Secrets;
 using HotelManagementAPI.Data;
 using HotelManagementAPI.Helper;
 using HotelManagementAPI.Services.IService;
+using HotelManagementAPI.Services.IServices;
 using HotelManagementAPI.Services.Service;
+using HotelManagementAPI.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -24,6 +26,7 @@ builder.Services.AddSingleton<SieveProcessor>();
 //inject helper
 builder.Services.AddSingleton<IHelper, Helper>();
 builder.Services.AddScoped<IDatPhongService, DatPhongService>();
+builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 //jnject cors 
 builder.Services.AddCors(options =>
 {
@@ -54,7 +57,7 @@ builder.Services.AddSwaggerGen();
 // connect to SQL Server
 builder.Services.AddDbContext<DataContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
+    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
 });
 
 var app = builder.Build();

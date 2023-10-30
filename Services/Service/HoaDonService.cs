@@ -20,13 +20,13 @@ namespace HotelManagementAPI.Services.Services
             return await _unitOfWork.HoaDons.DeleteAsync(id);
         }
 
-        public async Task<HoaDonResponeDto?> getHoaDon(int id, bool check)
+        public async Task<HoaDonResponeDto?> getHoaDon(int id, bool? check)
         {
             var hoaDon = await _unitOfWork.HoaDons.GetAsync(id);
             if(hoaDon == null)
                 return null;
             var responeHoaDon = Convert(hoaDon);
-            if (check)
+            if (check.HasValue && check == true)
             {
                 hoaDon.DaThanhToan = true;
                 responeHoaDon.NgayCheckOut = DateTime.UtcNow;
