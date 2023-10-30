@@ -161,7 +161,7 @@ namespace HotelManagementAPI.Controllers
                     return Problem("Entity set 'DataContext.KhachHangs'  is null.");
                 }
                 var convertToKhachHang = _mapper.Map<KhachHang>(khachHang);
-                convertToKhachHang.SoLanNghi = 1;
+                convertToKhachHang.SoLanNghi = 0;
                 convertToKhachHang.XepHang = false;
                 var successCreated = await _unitOfWork.Customers.AddAsync(convertToKhachHang);
                 if(successCreated == false)

@@ -104,5 +104,23 @@ namespace HotelManagementAPI.Core.Repositories
                 return false;
             }
         }
+
+        public async Task<double> tienPhong(int id)
+        {
+            var tienPhong = await (from phongs in _dataContext.Phongs
+                            join loaiPhongs in _dataContext.LoaiPhongs
+                            on phongs.MaLoaiPhong equals loaiPhongs.MaLoaiPhong
+                            where phongs.MaPhong == id
+                            select loaiPhongs.Gia).FirstOrDefaultAsync();
+            return tienPhong;
+        }
+
+        public async Task<bool> DoiTrangThai(int id, int trangthai)
+        {
+            Phong? phong = await GetAsync(id);
+            if(phong == null) return false;
+            phong.TrangThai = trangthai;
+            return true;
+        }
     }
 }

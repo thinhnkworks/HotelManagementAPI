@@ -2,7 +2,9 @@
 
 namespace HotelManagementAPI.Core.IRepositories
 {
-    public interface ILoaiPhongRepository : IGenericRepository<LoaiPhong> { 
+    public interface ILoaiPhongRepository : IGenericRepository<LoaiPhong> {
+
+    
 
     }
 }

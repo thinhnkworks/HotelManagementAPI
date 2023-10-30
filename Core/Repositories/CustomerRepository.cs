@@ -157,5 +157,13 @@ namespace HotelManagementAPI.Core.Repositories
                 return null;
             }
         }
+
+        public async Task<bool> TangNgayNghi(int id)
+        {
+            KhachHang? khachHang = await GetAsync(id);
+            if (khachHang == null) return false;
+            khachHang.SoLanNghi += 1;
+            return true;
+        }
     }
 }

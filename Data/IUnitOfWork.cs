@@ -10,6 +10,8 @@ namespace HotelManagementAPI.Data
         IPhongRepository Phongs { get; }
         IPhuPhiRepository PhuPhis { get; }
         IDichVuRepository DichVus { get;  }
+        IDatPhongRepository DatPhongs { get; } 
+        IHoaDonRepository HoaDons { get; }
         Task CompleteAsync();
     }
 }
