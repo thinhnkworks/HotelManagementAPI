@@ -3,6 +3,8 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using HotelManagementAPI.Data;
 using HotelManagementAPI.Helper;
+using HotelManagementAPI.Services.IService;
+using HotelManagementAPI.Services.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -21,6 +23,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<SieveProcessor>();
 //inject helper
 builder.Services.AddSingleton<IHelper, Helper>();
+builder.Services.AddScoped<IDatPhongService, DatPhongService>();
 //jnject cors 
 builder.Services.AddCors(options =>
 {

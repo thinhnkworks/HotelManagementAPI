@@ -12,89 +12,86 @@ namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DichVusController : ControllerBase
+    public class DatPhongController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private IMapper _mapper;
+        private readonly IDatPhongService _datPhongs;
 
-        public DichVusController(IUnitOfWork unitOfWork, IMapper mapper)
+        public DatPhongController(IDatPhongService datPhongs)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _datPhongs = datPhongs;
         }
 
-        // GET: api/DichVus
+        // GET: api/DatPhongs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DichVuResponeDto>>> GetDichVus()
+        public async Task<ActionResult<IEnumerable<DatPhongResponeDto>>> GetDatPhongs()
         {
-            if (_unitOfWork.DichVus == null)
+            if (_datPhongs == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity DichVu don't exist"
+                        "entity datPhong don't exist"
                     }
                 });
             }
-            var dichVus = _mapper.Map<List<DichVuResponeDto>>(await _unitOfWork.DichVus.GetAllAsync());
-            return Ok(new Result() { Success = true, Data = dichVus });
+            var datPhongs = await _datPhongs.getDatPhongs();
+            return Ok(new Result() { Success = true, Data = datPhongs });
         }
 
-        // GET: api/DichVu/5
+        // GET: api/DatPhong/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DichVuResponeDto>> GetDichVu(int id)
+        public async Task<ActionResult<DatPhongResponeDto>> GetDatPhong(int id)
         {
-            if (_unitOfWork.DichVus == null)
+            if (_datPhongs == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity DichVu don't exist"
+                        "entity DatPhong don't exist"
                     }
                 });
             }
-            var dichVu = await _unitOfWork.DichVus.GetAsync(id);
+            var datPhong = await _datPhongs.getDatPhong(id);
 
-            if (dichVu == null)
+            if (datPhong == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "dichVu don't exist"
+                        "datphong don't exist"
                     }
                 });
             }
             return Ok(new Result()
             {
                 Success = true,
-                Data = _mapper.Map<DichVuResponeDto>(dichVu)
+                Data = datPhong
             });
         }
 
-        // PUT: api/DichVus/5
+        // PUT: api/DatPhongs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchDichVu(int id, [FromBody] DichVuRequestDto dichVu)
+        public async Task<IActionResult> PatchDatPhong(int id, [FromBody] DatPhongRequestDto dp)
         {
-            var existDichVu = await _unitOfWork.DichVus.GetAsync(id);
-            if (existDichVu == null)
+            var datPhong = await _datPhongs.getDatPhong(id);
+            if (datPhong == null)
             {
                 return BadRequest(new Result()
                 {
                     Success = false,
                     Errors = new List<string>() {
-                        "dichvu not exist",
+                        "dat phong not exist",
                     }
                 });
             }
-            var convertToDichVu = _mapper.Map<DichVu>(dichVu);
-            var successUpdate = await _unitOfWork.DichVus.UpdateAsync(id, convertToDichVu);
+            var successUpdate = await _datPhongs.patchDatPhong(id, dp);
             if (!successUpdate)
             {
                 return BadRequest(new Result()
@@ -106,39 +103,37 @@ namespace HotelManagementAPI.Controllers
                         }
                 });
             }
-            await _unitOfWork.CompleteAsync();
             return NoContent();
         }
 
-        // POST: api/DichVus
+        // POST: api/DatPhongs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DichVuResponeDto>> PostPhuPhi([FromBody] DichVuRequestDto dichVu)
+        public async Task<ActionResult<DatPhongResponeDto>> PostDatPhong([FromBody] DatPhongRequestDto datPhong)
         {
             if (ModelState.IsValid)
             {
-                if (_unitOfWork.DichVus == null)
+                if (_datPhongs == null)
                 {
-                    return Problem("Entity set 'DataContext.DichVus'  is null.");
+                    return Problem("Entity set 'DataContext.DatPhongs'  is null.");
                 }
-                var convertToDichVu = _mapper.Map<DichVu>(dichVu);
-                var successCreated = await _unitOfWork.DichVus.AddAsync(convertToDichVu);
-                if (successCreated == false)
+                var successCreated = await _datPhongs.postDatPhong(datPhong);
+                if (successCreated == null)
                 {
                     return BadRequest(new Result()
                     {
                         Success = false,
                         Errors = new List<string>()
                         {
-                            "Invalid input, There is a field that has not been validated",
+                            "Don't created a skDatPhong",
+                            "trang thai có thể đã bị sai"
                         }
                     });
                 }
-                await _unitOfWork.CompleteAsync();
-                return CreatedAtAction("GetDichVu", new { id = convertToDichVu.MaDv }, new Result()
+                return CreatedAtAction("GetDatPhong", new { id = successCreated.MaSK }, new Result()
                 {
                     Success = true,
-                    Data = _mapper.Map<DichVuResponeDto>(convertToDichVu)
+                    Data = successCreated
                 });
             }
             return new JsonResult(new Result()
@@ -153,33 +148,32 @@ namespace HotelManagementAPI.Controllers
 
         // DELETE: api/DichVus/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDichVu(int id)
+        public async Task<IActionResult> DeleteDatPhong(int id)
         {
-            if (_unitOfWork.DichVus == null)
+            if (_datPhongs == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity DichVu don't exist"
+                        "entity DatPhong don't exist"
                     }
                 });
             }
-            var dichVu = await _unitOfWork.DichVus.GetAsync(id);
-            if (dichVu == null)
+            var datPhong = await _datPhongs.getDatPhong(id);
+            if (datPhong == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "dichVu don't exist"
+                        "datPhong don't exist"
                     }
                 });
             }
-            await _unitOfWork.DichVus.DeleteAsync(id);
-            await _unitOfWork.CompleteAsync();
+            await _datPhongs.deleteDatPhong(id);
             return NoContent();
         }
     }

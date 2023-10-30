@@ -150,4 +150,74 @@ public partial class DataContext : DbContext
 	}
 
 	partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    public override int SaveChanges()
+	{
+        var addedOrders = ChangeTracker.Entries<SuKienDatPhong>()
+                .Where(e => e.State == EntityState.Added)
+                .Select(e => e.Entity);
+
+        var deletedOrders = ChangeTracker.Entries<SuKienDatPhong>()
+            .Where(e => e.State == EntityState.Deleted)
+            .Select(e => e.Entity);
+
+		foreach ( var entity in addedOrders )
+		{
+			var khachHang = KhachHangs.FirstOrDefault(x => x.MaKh == entity.MaKh);
+			if(khachHang != null)
+				khachHang.SoLanNghi += 1;
+            var tienPhong = (
+							from SKDatPhong in SuKienDatPhongs
+                            join Phong in Phongs
+                            on SKDatPhong.MaPhong equals Phong.MaPhong
+                            join LoaiPhong in LoaiPhongs
+                            on Phong.MaLoaiPhong equals LoaiPhong.MaLoaiPhong
+                            where SKDatPhong.MaSk == entity.MaSk
+                            select new
+                            {
+                                TienPhong = LoaiPhong.Gia
+                            }).FirstOrDefault();
+            var hoaDon = HoaDons.FirstOrDefault(x => x.MaSkdp == entity.MaSk);
+			if (hoaDon != null)
+			{
+				if(tienPhong != null )
+				{
+					hoaDon.TriGiaHd += tienPhong.TienPhong;
+				}
+            }
+			else
+			{
+				HoaDons.Add(new HoaDon()
+				{
+					MaSkdp = entity.MaSk,
+					DaThanhToan = false,
+					TriGiaHd = tienPhong!.TienPhong
+				});
+			}
+		}
+		foreach ( var entity in deletedOrders )
+		{
+            var hoaDon = HoaDons.FirstOrDefault(x => x.MaSkdp == entity.MaSk);
+            if (hoaDon != null)
+            {
+                var tienPhong =  (
+                                       from SKDatPhong in SuKienDatPhongs
+                                       join Phong in Phongs
+                                       on SKDatPhong.MaPhong equals Phong.MaPhong
+                                       join LoaiPhong in LoaiPhongs
+                                       on Phong.MaLoaiPhong equals LoaiPhong.MaLoaiPhong
+                                       where SKDatPhong.MaSk == entity.MaSk
+                                       select new
+                                       {
+                                           TienPhong = LoaiPhong.Gia
+                                       }).FirstOrDefault();
+
+                if (tienPhong != null)
+                {
+                    hoaDon.TriGiaHd -= tienPhong.TienPhong;
+                }
+					
+            }
+        }
+		return  base.SaveChanges();
+    }
 }

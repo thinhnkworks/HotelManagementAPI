@@ -7,5 +7,6 @@ namespace HotelManagementAPI.Core.IRepositories
         Task<KhachHang?> GetByCCCDAsync(string cccd);
         Task<bool> CheckUniqueOfStd(string sdt);
         Task<bool> CheckUniqueOfCccd(string cccd);
+        Task<bool> TangNgayNghi(int id);
     }
 }
