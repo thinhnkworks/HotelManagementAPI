@@ -114,7 +114,21 @@ namespace HotelManagementAPI.Core.Repositories
 
         public async Task<bool> UpdateTienDichVu(int MaSK, double Tien)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var hoaDon = await _dbSet.FirstOrDefaultAsync(x => x.MaSkdp == MaSK);
+                if (hoaDon != null)
+                {
+                    hoaDon.TriGiaHd += Tien;
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} UdateTienDichVu method error", typeof(HoaDonRepository));
+                return false;
+            }
         }
 
         public async Task<bool> UpdateTienPhuPhi(int MaSK, double Tien)

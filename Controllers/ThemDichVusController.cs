@@ -9,86 +9,86 @@ namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ThemPhuPhisController : ControllerBase
+    public class ThemDichVusController : ControllerBase
     {
-        private readonly IThemPhuPhiService _themPhuPhis;
+        private readonly IThemDichVuService _themDichVus;
 
-        public ThemPhuPhisController(IThemPhuPhiService themPhuPhis)
+        public ThemDichVusController(IThemDichVuService themDichVus)
         {
-            _themPhuPhis = themPhuPhis;
+            _themDichVus = themDichVus;
         }
 
-        // GET: api/ThemPhuPhis
+        // GET: api/ThemDichVus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ThemPhuPhiResponeDto>>> GetThemPhuPhis()
+        public async Task<ActionResult<IEnumerable<ThemDichVuResponeDto>>> GetThemDichVus()
         {
-            if (_themPhuPhis == null)
+            if (_themDichVus == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity suKienPhuPhi don't exist"
+                        "entity suKienThemDichVu don't exist"
                     }
                 });
             }
-            var phuPhis = await _themPhuPhis.getThemPhuPhis();
-            return Ok(new Result() { Success = true, Data = phuPhis });
+            var dichVus = await _themDichVus.getThemDichVus();
+            return Ok(new Result() { Success = true, Data = dichVus });
         }
 
-        // GET: api/PhuPhis/5
+        // GET: api/ThemDichVus/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ThemPhuPhiResponeDto>> GetThemPhuPhi(int id)
+        public async Task<ActionResult<ThemDichVuResponeDto>> GetThemDichVu(int id)
         {
-            if (_themPhuPhis == null)
+            if (_themDichVus == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity SuKienThemPhuPhi don't exist"
+                        "entity SuKienThemDichVu don't exist"
                     }
                 });
             }
-            var themPhuPhi = await _themPhuPhis.getThemPhuPhi(id);
+            var themDichVu = await _themDichVus.getThemDichVu(id);
 
-            if (themPhuPhi == null)
+            if (themDichVu == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "themphuphi don't exist"
+                        "themDichVu don't exist"
                     }
                 });
             }
             return Ok(new Result()
             {
                 Success = true,
-                Data = themPhuPhi
+                Data = themDichVu
             });
         }
 
-        // PUT: api/ThemPhuPhis/5
+        // PUT: api/ThemDichVu/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchThemPhuPhi(int id, [FromBody] ThemPhuPhiRequestDto dp)
+        public async Task<IActionResult> PatchThemDichVu(int id, [FromBody] ThemDichVuRequestDto dp)
         {
-            var themPhuPhi = await _themPhuPhis.getThemPhuPhi(id);
-            if (themPhuPhi == null)
+            var themDichVu = await _themDichVus.getThemDichVu(id);
+            if (themDichVu == null)
             {
                 return BadRequest(new Result()
                 {
                     Success = false,
                     Errors = new List<string>() {
-                        "ThemPhuPhi not exist",
+                        "ThemDichVu not exist",
                     }
                 });
             }
-            var successUpdate = await _themPhuPhis.patchThemPhuPhi(id, dp);
+            var successUpdate = await _themDichVus.patchThemDichVu(id, dp);
             if (!successUpdate)
             {
                 return BadRequest(new Result()
@@ -103,18 +103,18 @@ namespace HotelManagementAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/ThemPhuPhis
+        // POST: api/ThemDichVus
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ThemDichVuResponeDto>> PostThemDichVu([FromBody] ThemPhuPhiRequestDto dto)
+        public async Task<ActionResult<DichVuResponeDto>> PostDichVu([FromBody] ThemDichVuRequestDto dto)
         {
             if (ModelState.IsValid)
             {
-                if (_themPhuPhis == null)
+                if (_themDichVus == null)
                 {
-                    return Problem("Entity set 'DataContext.ThemPhuPhis'  is null.");
+                    return Problem("Entity set 'DataContext.ThemDichVu'  is null.");
                 }
-                var successCreated = await _themPhuPhis.postThemPhuPhi(dto);
+                var successCreated = await _themDichVus.postThemDichVu(dto);
                 if (successCreated == null)
                 {
                     return BadRequest(new Result()
@@ -127,7 +127,7 @@ namespace HotelManagementAPI.Controllers
                         }
                     });
                 }
-                return CreatedAtAction("GetThemPhuPhi", new { id = successCreated.MaSK }, new Result()
+                return CreatedAtAction("GetThemDichVu", new { id = successCreated.MaSK }, new Result()
                 {
                     Success = true,
                     Data = successCreated
@@ -143,34 +143,34 @@ namespace HotelManagementAPI.Controllers
             { StatusCode = 500 };
         }
 
-        // DELETE: api/ThemPhuPhis/5
+        // DELETE: api/ThemDichVus/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteThemPhuPhi(int id)
+        public async Task<IActionResult> DeleteThemDichVu(int id)
         {
-            if (_themPhuPhis == null)
+            if (_themDichVus == null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "entity ThemPhuPhi don't exist"
+                        "entity ThemDichVu don't exist"
                     }
                 });
             }
-            var themPhuPhi = await _themPhuPhis.getThemPhuPhi(id);
-            if (themPhuPhi == null)
+            var themDichVu = await _themDichVus.getThemDichVu(id);
+            if (themDichVu== null)
             {
                 return NotFound(new Result()
                 {
                     Success = false,
                     Errors = new List<string>
                     {
-                        "themPhuPhi don't exist"
+                        "themDichVu don't exist"
                     }
                 });
             }
-            await _themPhuPhis.deleteThemPhuPhi(id);
+            await _themDichVus.deleteThemDichVu(id);
             return NoContent();
         }
     }

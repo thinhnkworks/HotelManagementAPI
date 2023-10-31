@@ -28,6 +28,7 @@ builder.Services.AddSingleton<IHelper, Helper>();
 builder.Services.AddScoped<IDatPhongService, DatPhongService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<IThemPhuPhiService, ThemPhuPhiService>();
+builder.Services.AddScoped<IThemDichVuService, ThemDichVuService>();
 //jnject cors 
 builder.Services.AddCors(options =>
 {
