@@ -13,6 +13,7 @@ namespace HotelManagementAPI.Data
         IDatPhongRepository DatPhongs { get; } 
         IHoaDonRepository HoaDons { get; }
         IThemPhuPhiRepository ThemPhuPhis { get; }
+        IThemDichVuRepository ThemDichVus { get; }
         Task CompleteAsync();
     }
 }
