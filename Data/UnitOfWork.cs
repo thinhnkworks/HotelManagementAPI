@@ -19,6 +19,8 @@ namespace HotelManagementAPI.Data
         public IDatPhongRepository DatPhongs { get; set; }
         public IHoaDonRepository HoaDons { get; set; }
 
+        public IThemPhuPhiRepository ThemPhuPhis { get; set; }
+
         public UnitOfWork(DataContext dataContext, ILoggerFactory loggerFactory,IHelper helper, IConfiguration configuration)
         {
             _context = dataContext;
@@ -33,6 +35,7 @@ namespace HotelManagementAPI.Data
             DichVus = new DichVuRepository(_context, _logger);
             DatPhongs = new DatPhongRepository(_context, _logger);
             HoaDons = new HoaDonRepository(_context, _logger);
+            ThemPhuPhis = new ThemPhuPhiRepository(_context, _logger);
         }
         public async Task CompleteAsync()
         {
