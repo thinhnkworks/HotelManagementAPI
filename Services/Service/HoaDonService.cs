@@ -20,7 +20,7 @@ namespace HotelManagementAPI.Services.Services
             return await _unitOfWork.HoaDons.DeleteAsync(id);
         }
 
-        public async Task<HoaDonResponeDto?> getHoaDon(int id, bool? check)
+        public async Task<HoaDonResponeDto?> getHoaDon(int id, bool? check, int? MaPhong)
         {
             var hoaDon = await _unitOfWork.HoaDons.GetAsync(id);
             if(hoaDon == null)
@@ -30,7 +30,16 @@ namespace HotelManagementAPI.Services.Services
             {
                 hoaDon.DaThanhToan = true;
                 responeHoaDon.NgayCheckOut = DateTime.UtcNow;
+                if (MaPhong.HasValue)
+                {
+                    var successThayDoi = await _unitOfWork.Phongs.DoiTrangThai(MaPhong.Value, 0);
+                    if (successThayDoi == true)
+                    {
+                        await _unitOfWork.CompleteAsync();
+                    }
+                }
             }
+            await _unitOfWork.CompleteAsync();
             return responeHoaDon;
         }
         public async Task<IEnumerable<HoaDonResponeDto>> getHoaDons()

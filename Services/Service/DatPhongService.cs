@@ -3,6 +3,7 @@ using HotelManagementAPI.DTO.Request;
 using HotelManagementAPI.DTO.Respone;
 using HotelManagementAPI.Models;
 using HotelManagementAPI.Services.IService;
+using System;
 
 namespace HotelManagementAPI.Services.Service
 {
@@ -121,8 +122,8 @@ namespace HotelManagementAPI.Services.Service
                     MaKh = datPhong.MaKH,
                     MaNv = datPhong.MaNV,
                     MaPhong = datPhong.MaPhong,
-                    NgayNhanPhong = datPhong.NgayNhanPhong,
-                    NgayTraPhong = datPhong.NgayTraPhong,
+                    NgayNhanPhong = datPhong.NgayNhanPhong.ToDateTime(TimeOnly.Parse("00:00:00")),
+                    NgayTraPhong = datPhong.NgayTraPhong.ToDateTime(TimeOnly.Parse("00:00:00")),
                     SoNgayO = datPhong.SoNgayO,
                 };
             }
