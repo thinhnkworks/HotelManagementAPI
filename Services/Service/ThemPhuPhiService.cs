@@ -48,9 +48,9 @@ namespace HotelManagementAPI.Services.Service
             return ConvertTo(skThemPhuPhi);
         }
 
-        public async Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis()
+        public async Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis(int? MaSKDP, int? MaPhong)
         {
-            return (await _unitOfWork.ThemPhuPhis.GetAllAsync()).Select(x => ConvertTo(x));
+            return (await _unitOfWork.ThemPhuPhis.DanhSachPhuPhiTheoPhongVaMaSK(MaSKDP, MaPhong)).Select(x => ConvertTo(x));
         }
 
         public async Task<bool> patchThemPhuPhi(int id, ThemPhuPhiRequestDto dto)
