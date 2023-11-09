@@ -26,7 +26,10 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                var themDichVus = await base.GetAllAsync();
+                var themDichVus = await (from SKSuDungDichVu in _dbSet
+                                  where SKSuDungDichVu.MaDvNavigation != null && SKSuDungDichVu.MaNvNavigation != null && SKSuDungDichVu.MaSkdpNavigation != null
+                                  select SKSuDungDichVu).ToListAsync();
+                                  
                 return themDichVus;
             }
             catch (Exception ex)
@@ -114,6 +117,28 @@ namespace HotelManagementAPI.Core.Repositories
             {
                 _logger.LogError(ex, "{Repo} TongTienPhuPhi method error", typeof(ThemDichVuRepository));
                 return 0.0;
+            }
+        }
+
+        public async Task<IEnumerable<SuKienSuDungDichVu>> DanhSachDichVuTheoPhongVaMaSK(int? MaSKDatPhong, int? MaPhong)
+        {
+            try
+            {
+                var danhSachThemDichVu = await GetAllAsync();
+                if(MaSKDatPhong.HasValue && MaPhong.HasValue)
+                {
+                    danhSachThemDichVu = await (from skThemDichVu in _dbSet
+                                                join sKDatPhong in _dataContext.SuKienDatPhongs
+                                                on skThemDichVu.MaSkdp equals sKDatPhong.MaSk
+                                                where skThemDichVu.MaDvNavigation != null && skThemDichVu.MaNvNavigation != null && skThemDichVu.MaSkdpNavigation != null
+                                                        && skThemDichVu.MaSkdp == MaSKDatPhong && sKDatPhong.MaPhong == MaPhong
+                                                select skThemDichVu).ToListAsync();
+                }
+                return danhSachThemDichVu;
+            }catch(Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} DanhSachDichVuTheoPhongVaMaSK method error", typeof(ThemDichVuRepository));
+                return new List<SuKienSuDungDichVu>();
             }
         }
     }

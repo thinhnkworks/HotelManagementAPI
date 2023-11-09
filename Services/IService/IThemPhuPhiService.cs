@@ -5,7 +5,7 @@ namespace HotelManagementAPI.Services.IService
 {
     public interface IThemPhuPhiService
     {
-        Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis();
+        Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis(int? MaSKDP, int? MaPhong);
         Task<ThemPhuPhiResponeDto?> getThemPhuPhi(int id);
         Task<bool> deleteThemPhuPhi(int id);
         Task<ThemPhuPhiResponeDto?> postThemPhuPhi(ThemPhuPhiRequestDto dto);

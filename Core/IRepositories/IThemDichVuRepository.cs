@@ -4,6 +4,7 @@ namespace HotelManagementAPI.Core.IRepositories
 {
     public interface IThemDichVuRepository: IGenericRepository<SuKienSuDungDichVu>
     {
-        public Task<double> TongTienDichVu(SuKienSuDungDichVu themDichVu);
+        Task<double> TongTienDichVu(SuKienSuDungDichVu themDichVu);
+        Task<IEnumerable<SuKienSuDungDichVu>> DanhSachDichVuTheoPhongVaMaSK(int? MaSKDatPhong, int? MaPhong);
     }
 }

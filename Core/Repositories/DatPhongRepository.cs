@@ -26,7 +26,9 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                var datPhongs = await base.GetAllAsync();
+                var datPhongs = await (from SKDatPhong in _dbSet
+                                       where SKDatPhong.MaKhNavigation != null && SKDatPhong.MaNvNavigation != null
+                                       select SKDatPhong).ToListAsync();
                 return datPhongs;
             }
             catch (Exception ex)

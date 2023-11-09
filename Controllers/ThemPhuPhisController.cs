@@ -20,7 +20,7 @@ namespace HotelManagementAPI.Controllers
 
         // GET: api/ThemPhuPhis
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ThemPhuPhiResponeDto>>> GetThemPhuPhis()
+        public async Task<ActionResult<IEnumerable<ThemPhuPhiResponeDto>>> GetThemPhuPhis([FromQuery] int? MaSKDP, [FromQuery] int? MaPhong)
         {
             if (_themPhuPhis == null)
             {
@@ -33,7 +33,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            var phuPhis = await _themPhuPhis.getThemPhuPhis();
+            var phuPhis = await _themPhuPhis.getThemPhuPhis(MaSKDP, MaPhong);
             return Ok(new Result() { Success = true, Data = phuPhis });
         }
 
