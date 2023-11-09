@@ -40,7 +40,7 @@ namespace HotelManagementAPI.Controllers
 
         // GET: api/hoaDon/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<HoaDonResponeDto>> GetHoaDon(int id, [FromQuery] bool? check = false)
+        public async Task<ActionResult<HoaDonResponeDto>> GetHoaDon(int id, [FromQuery] int? MaPhong, [FromQuery] bool? check = false)
         {
             if (_hoaDons == null)
             {
@@ -53,7 +53,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            var hoaDon = await _hoaDons.getHoaDon(id, check);
+            var hoaDon = await _hoaDons.getHoaDon(id, check, MaPhong);
 
             if (hoaDon == null)
             {
@@ -89,7 +89,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            var hoaDon = await _hoaDons.getHoaDon(id, false);
+            var hoaDon = await _hoaDons.deleteHoaDon(id);
             if (hoaDon == null)
             {
                 return NotFound(new Result()

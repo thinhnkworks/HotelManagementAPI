@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace HotelManagementAPI.DTO.Request
 {
@@ -19,9 +20,9 @@ namespace HotelManagementAPI.DTO.Request
         public int SoNgayO { get; set; }
 
         [Required]
-        public DateTime NgayNhanPhong { get; set; }
+        public DateOnly NgayNhanPhong { get; set; }
 
         [Required]
-        public DateTime NgayTraPhong { get; set; }
+        public DateOnly NgayTraPhong { get; set; }
     }
 }
