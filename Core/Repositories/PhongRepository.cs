@@ -78,7 +78,7 @@ namespace HotelManagementAPI.Core.Repositories
         {
             try
             {
-                var phongExist = await _dbSet.FirstOrDefaultAsync(x => x.MaLoaiPhong == id);
+                var phongExist = await _dbSet.FirstOrDefaultAsync(x => x.MaPhong == id);
 
                 if (phongExist == null)
                 {
