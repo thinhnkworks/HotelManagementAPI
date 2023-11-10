@@ -12,5 +12,6 @@ namespace HotelManagementAPI.DTO.Respone
         public DateTime? NgayCheckIn { get; set;}
         public DateTime? NgayCheckOut { get; set; }
         public double TriGiaDonHang { get; set; }
+        public string? TinhTrang { get; set; }
     }
 }

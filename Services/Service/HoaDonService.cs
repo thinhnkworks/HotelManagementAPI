@@ -29,6 +29,7 @@ namespace HotelManagementAPI.Services.Services
             if (check.HasValue && check == true)
             {
                 hoaDon.DaThanhToan = true;
+                hoaDon.MaSkdpNavigation.NgayTraPhong = DateTime.UtcNow;
                 responeHoaDon.NgayCheckOut = DateTime.UtcNow;
                 if (MaPhong.HasValue)
                 {
@@ -78,6 +79,7 @@ namespace HotelManagementAPI.Services.Services
                 var KhachHang = SkDatPhong.MaKhNavigation.HoTen;
                 var NhanVien = SkDatPhong.MaNvNavigation.HoTen;
                 var CheckIn = SkDatPhong.NgayNhanPhong;
+                var CheckOut = SkDatPhong.NgayTraPhong;
                 var LoaiPhong = SkDatPhong.MaPhongNavigation.MaLoaiPhongNavigation!.TenLoaiPhong;
                 return new HoaDonResponeDto
                 {
@@ -85,9 +87,11 @@ namespace HotelManagementAPI.Services.Services
                     HoTenNhanVien = NhanVien,
                     MaHD = hoaDon.MaHd,
                     NgayCheckIn = CheckIn,
-                    NgayCheckOut = null,
+                    NgayCheckOut = CheckOut,
                     TenPhong = LoaiPhong,
-                    TriGiaDonHang = hoaDon.TriGiaHd
+                    TriGiaDonHang = hoaDon.TriGiaHd,
+                    TinhTrang = (hoaDon.DaThanhToan) ? "Đã Xuất Hóa Đơn" : "Chưa Xuât"
+                    
                 };
             }
             catch (Exception ex)
