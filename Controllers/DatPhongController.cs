@@ -5,13 +5,17 @@ using HotelManagementAPI.DTO.Respone;
 using HotelManagementAPI.DTO.Result;
 using HotelManagementAPI.Models;
 using HotelManagementAPI.Services.IService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
     public class DatPhongController : ControllerBase
     {
         private readonly IDatPhongService _datPhongs;

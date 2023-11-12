@@ -13,11 +13,15 @@ using HotelManagementAPI.DTO.Respone;
 using HotelManagementAPI.DTO.Result;
 using Sieve.Models;
 using Sieve.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
     public class NhanViensController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

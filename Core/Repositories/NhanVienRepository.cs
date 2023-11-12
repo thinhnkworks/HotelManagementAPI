@@ -167,10 +167,9 @@ namespace HotelManagementAPI.Core.Repositories
                 var secretKey = _configuration["HashSecretKey:Value"];
                 var hashPassword = _helper.HashPasswordToBytes(password, secretKey!);
                 // Replace hashPassword
-                var newNhanVien = nhanVien;
-                newNhanVien.MatKhau = hashPassword; 
+                nhanVien.MatKhau = hashPassword;
                 // Add newNhanVien into database
-                return await AddAsync(newNhanVien);
+                return await AddAsync(nhanVien);
             } catch (Exception ex)
             {
                 _logger.LogError(ex, "{Repo} create nhanvien with hash method error", typeof(NhanVienRepository));
@@ -215,6 +214,43 @@ namespace HotelManagementAPI.Core.Repositories
             {
                 _logger.LogError(ex, "{Repo} uget by Sdt method error", typeof(NhanVienRepository));
                 return null;
+            }
+        }
+
+        public async Task<NhanVien?> GetByCCCDAsync(string CCCD)
+        {
+            try
+            {
+                var existNhanVien = await _dbSet.FirstOrDefaultAsync(x => x.Cccd == CCCD);
+                if (existNhanVien == null)
+                    return null;
+                return existNhanVien;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} uget by CCCD method error", typeof(NhanVienRepository));
+                return null;
+            }
+        }
+
+        public bool CheckPassword(NhanVien nhanvien, string password)
+        {
+            try
+            {
+                if (!_helper.CheckPassword(password))
+                {
+                    throw new Exception("passwork is Invalid");
+                }
+                //Hash Password
+                var secretKey = _configuration["HashSecretKey:Value"];
+                var hashPassword = _helper.VerifyPassword(password, nhanvien.MatKhau, secretKey!);
+                return hashPassword;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} kiemtra nhanvien with hash method error", typeof(NhanVienRepository));
+                return false;
             }
         }
     }

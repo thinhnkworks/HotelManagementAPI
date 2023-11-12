@@ -4,14 +4,18 @@ using HotelManagementAPI.DTO.Request;
 using HotelManagementAPI.DTO.Respone;
 using HotelManagementAPI.DTO.Result;
 using HotelManagementAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Services;
+using System.Data;
 
 namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
     public class PhuPhisController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

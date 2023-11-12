@@ -1,16 +1,22 @@
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
+﻿using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using HotelManagementAPI.Configuration;
 using HotelManagementAPI.Data;
 using HotelManagementAPI.Helper;
 using HotelManagementAPI.Services.IService;
 using HotelManagementAPI.Services.IServices;
 using HotelManagementAPI.Services.Service;
 using HotelManagementAPI.Services.Services;
+using HotelManagementAPI.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Sieve.Services;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Inject serilog
@@ -55,11 +61,36 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 // connect to SQL Server
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
+});
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtConfig:Secret"]!);
+var tokenValidationParams = new TokenValidationParameters
+{
+
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(key),
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    ValidateLifetime = true, // Kiểm tra thời gian hết hạn
+    RequireExpirationTime = false, // Yêu cầu thời gian hết hạn trong token
+    ClockSkew = TimeSpan.Zero,
+};
+builder.Services.AddSingleton(tokenValidationParams);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(jwt =>
+{
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = tokenValidationParams;
+
 });
 
 var app = builder.Build();
@@ -73,7 +104,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication(); // Đảm bảo middleware xác thực JWT đã được sử dụng.
 app.UseAuthorization();
 
 app.MapControllers();

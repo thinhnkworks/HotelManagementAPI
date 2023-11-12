@@ -6,6 +6,7 @@ namespace HotelManagementAPI.DTO.Respone
     public class HoaDonResponeDto
     {
         public int MaHD { get; set; }
+        public int MaSKThuePhong { get; set; }
         public string? HoTenKhachHang { get; set; }
         public string? HoTenNhanVien { get; set; }
         public string? TenPhong { get; set; }

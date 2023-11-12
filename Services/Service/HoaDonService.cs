@@ -83,6 +83,7 @@ namespace HotelManagementAPI.Services.Services
                 var LoaiPhong = SkDatPhong.MaPhongNavigation.MaLoaiPhongNavigation!.TenLoaiPhong;
                 return new HoaDonResponeDto
                 {
+                    MaSKThuePhong = hoaDon.MaSkdp,
                     HoTenKhachHang = KhachHang,
                     HoTenNhanVien = NhanVien,
                     MaHD = hoaDon.MaHd,
@@ -90,8 +91,7 @@ namespace HotelManagementAPI.Services.Services
                     NgayCheckOut = CheckOut,
                     TenPhong = LoaiPhong,
                     TriGiaDonHang = hoaDon.TriGiaHd,
-                    TinhTrang = (hoaDon.DaThanhToan) ? "Đã Xuất Hóa Đơn" : "Chưa Xuât"
-                    
+                    TinhTrang = (hoaDon.DaThanhToan) ? "Đã Xuất Hóa Đơn" : "Chưa Xuât" 
                 };
             }
             catch (Exception ex)
