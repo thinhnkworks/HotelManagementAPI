@@ -13,11 +13,15 @@ using HotelManagementAPI.DTO.Result;
 using HotelManagementAPI.DTO.Request;
 using Sieve.Services;
 using Sieve.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace HotelManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "user")]
     public class KhachHangsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
