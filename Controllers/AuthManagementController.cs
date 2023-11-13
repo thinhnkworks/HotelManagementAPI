@@ -5,6 +5,7 @@ using HotelManagementAPI.DTO.Request;
 using HotelManagementAPI.DTO.Respone;
 using HotelManagementAPI.DTO.Result;
 using HotelManagementAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -149,6 +150,43 @@ namespace HotelManagementAPI.Controllers
                     "Invalid payload",
                 }
             });
+        }
+        [HttpGet]
+        [Route("my")]
+        [Authorize]
+        public async Task<ActionResult<NhanVienResponeDto>> GetMyCurrentUser()
+        {
+            var user = HttpContext.User;
+            if (user != null && user.Identity!.IsAuthenticated)
+            {
+                var CCCD = user!.FindFirst("CCCD")?.Value;
+                if (!string.IsNullOrEmpty(CCCD))
+                {
+                    var userData = await _unitOfWork.NhanViens.GetByCCCDAsync(CCCD);
+                    if (userData != null)
+                    {
+                        return Ok(new Result() { Success = true, Data = _mapper.Map<NhanVienResponeDto>(userData) });
+                    }
+                    return NotFound(new Result()
+                    {
+                        Success = false,
+                        Errors = new List<string>(){
+                        "User does not exist"
+                    }
+                    });
+                }
+                return BadRequest(new Result()
+                {
+                    Success = false,
+                    Errors = new List<string>(){
+                        "Id did not found"
+                    }
+                });
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
         private List<Claim> getAllValidClaims(NhanVien nhanvien, bool QuanLy)
         {
