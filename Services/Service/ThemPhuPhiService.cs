@@ -48,9 +48,9 @@ namespace HotelManagementAPI.Services.Service
             return ConvertTo(skThemPhuPhi);
         }
 
-        public async Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis(int? MaSKDP, int? MaPhong)
+        public async Task<IEnumerable<ThemPhuPhiResponeDto>> getThemPhuPhis(int? MaSKDP)
         {
-            return (await _unitOfWork.ThemPhuPhis.DanhSachPhuPhiTheoPhongVaMaSK(MaSKDP, MaPhong)).Select(x => ConvertTo(x));
+            return (await _unitOfWork.ThemPhuPhis.DanhSachPhuPhiTheoPhongVaMaSK(MaSKDP)).Select(x => ConvertTo(x));
         }
 
         public async Task<bool> patchThemPhuPhi(int id, ThemPhuPhiRequestDto dto)
@@ -140,6 +140,8 @@ namespace HotelManagementAPI.Services.Service
                     MaSKDP = entity.MaSkdp,
                     SoLuong = entity.SoLuong,
                     ThoiGian = entity.ThoiGian,
+                    TongTien = entity.MaPpNavigation.Gia * entity.SoLuong,
+                    TenPhuPhi = entity.MaPpNavigation.TenPp
                 };
             }
             catch {

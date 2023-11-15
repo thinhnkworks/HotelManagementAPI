@@ -5,7 +5,7 @@ namespace HotelManagementAPI.Services.IService
 {
     public interface IThemDichVuService
     {
-        Task<IEnumerable<ThemDichVuResponeDto>> getThemDichVus(int? MaSKDP, int? MaPhong);
+        Task<IEnumerable<ThemDichVuResponeDto>> getThemDichVus(int? MaSKDP);
         Task<ThemDichVuResponeDto?> getThemDichVu(int id);
         Task<bool> deleteThemDichVu(int id);
         Task<ThemDichVuResponeDto?> postThemDichVu(ThemDichVuRequestDto dto);
