@@ -99,6 +99,7 @@ namespace HotelManagementAPI.Services.Service
                     if (successUpdateHoaDon)
                     {
                         await _unitOfWork.CompleteAsync();
+                        skThemPhuPhi.MaPpNavigation = await _unitOfWork.PhuPhis.GetAsync(skThemPhuPhi.MaPp);
                         return ConvertTo(skThemPhuPhi);
                     }
                 }

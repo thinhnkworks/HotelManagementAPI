@@ -100,6 +100,7 @@ namespace HotelManagementAPI.Services.Service
                     if (successUpdateHoaDon)
                     {
                         await _unitOfWork.CompleteAsync();
+                        skThemDichVu.MaDvNavigation = await _unitOfWork.DichVus.GetAsync(skThemDichVu.MaDv);
                         return ConvertTo(skThemDichVu);
                     }
                 }
