@@ -24,7 +24,7 @@ namespace HotelManagementAPI.Controllers
 
         // GET: api/ThemDichVus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ThemDichVuResponeDto>>> GetThemDichVus([FromQuery] int? MaSKDP,[FromQuery] int? MaPhong)
+        public async Task<ActionResult<IEnumerable<ThemDichVuResponeDto>>> GetThemDichVus([FromQuery] int? MaSKDP)
         {
             if (_themDichVus == null)
             {
@@ -37,7 +37,7 @@ namespace HotelManagementAPI.Controllers
                     }
                 });
             }
-            var dichVus = await _themDichVus.getThemDichVus(MaSKDP, MaPhong);
+            var dichVus = await _themDichVus.getThemDichVus(MaSKDP);
             return Ok(new Result() { Success = true, Data = dichVus });
         }
 

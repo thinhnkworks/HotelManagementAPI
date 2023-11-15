@@ -15,8 +15,11 @@ namespace HotelManagementAPI.DTO.Respone
         [Required]
         public int MaSKDP { get; set; }
 
+        public string? TenPhuPhi { get; set; }
+
         [Required]
         public int SoLuong { get; set; }
+        public double TongTien { get; set; }
 
         public DateTime? ThoiGian { get; set; }
     }

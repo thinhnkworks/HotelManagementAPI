@@ -120,18 +120,18 @@ namespace HotelManagementAPI.Core.Repositories
             }
         }
 
-        public async Task<IEnumerable<SuKienSuDungDichVu>> DanhSachDichVuTheoPhongVaMaSK(int? MaSKDatPhong, int? MaPhong)
+        public async Task<IEnumerable<SuKienSuDungDichVu>> DanhSachDichVuTheoPhongVaMaSK(int? MaSKDatPhong)
         {
             try
             {
                 var danhSachThemDichVu = await GetAllAsync();
-                if(MaSKDatPhong.HasValue && MaPhong.HasValue)
+                if(MaSKDatPhong.HasValue)
                 {
                     danhSachThemDichVu = await (from skThemDichVu in _dbSet
                                                 join sKDatPhong in _dataContext.SuKienDatPhongs
                                                 on skThemDichVu.MaSkdp equals sKDatPhong.MaSk
                                                 where skThemDichVu.MaDvNavigation != null && skThemDichVu.MaNvNavigation != null && skThemDichVu.MaSkdpNavigation != null
-                                                        && skThemDichVu.MaSkdp == MaSKDatPhong && sKDatPhong.MaPhong == MaPhong
+                                                        && skThemDichVu.MaSkdp == MaSKDatPhong 
                                                 select skThemDichVu).ToListAsync();
                 }
                 return danhSachThemDichVu;
